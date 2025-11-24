@@ -12,11 +12,12 @@ A comprehensive academic project demonstrating microservices architecture with S
 5. **Inscription Service** (Port 8082) - Student Enrollment with Feign Client
 6. **Statistique Service** (Port 8083) - YouTube Analytics with WebClient
 
-### Frontend (Angular 17)
-- Standalone Components
+### Frontend (NextJs)
+- React + Next.js (recommended Next 14)
 - TailwindCSS for styling
 - GSAP animations
 - Apollo GraphQL Client
+- Framer Motion for transitions
 - JWT & OAuth2 Google Authentication
 
 ## Prerequisites
@@ -73,7 +74,7 @@ A comprehensive academic project demonstrating microservices architecture with S
 ### Frontend Setup
 
 \`\`\`bash
-cd learning-platform-angular
+cd frontend/next-app
 npm install
 npm start
 \`\`\`
@@ -125,7 +126,7 @@ Access the application at `http://localhost:4200`
 - ✅ SLF4J logging
 
 ### Frontend
-- ✅ Angular 17 standalone components
+- ✅ NextJs
 - ✅ TailwindCSS styling
 - ✅ GSAP animations
 - ✅ Apollo GraphQL client
@@ -145,7 +146,7 @@ Access the application at `http://localhost:4200`
 ├── cours-service/          # Course management
 ├── inscription-service/    # Enrollment management
 ├── statistique-service/    # YouTube analytics
-└── learning-platform-angular/  # Angular frontend
+└── next-app/  # NextJs frontend
 \`\`\`
 
 ## Technologies Used
@@ -163,7 +164,7 @@ Access the application at `http://localhost:4200`
 - Lombok
 
 ### Frontend
-- Angular 17
+- NextJs
 - TailwindCSS 3.3.6
 - GSAP 3.12.4
 - Apollo Angular 6.0.0
