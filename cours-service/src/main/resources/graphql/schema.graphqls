@@ -1,0 +1,50 @@
+type Query {
+    course(id: ID!): Course
+    courses: [Course]
+}
+
+type Mutation {
+    createCourse(input: CourseInput!): Course
+}
+
+type Course {
+    id: ID!
+    title: String!
+    description: String
+    category: Category!
+    professor: Professor!
+    youtubeVideoId: String
+    price: Float
+    createdAt: String
+    lessons: [Lesson]
+}
+
+type Category {
+    id: ID!
+    name: String!
+    description: String
+}
+
+type Professor {
+    id: ID!
+    fullName: String!
+    email: String!
+    bio: String
+    avatarUrl: String
+}
+
+type Lesson {
+    id: ID!
+    title: String!
+    content: String
+    duration: Int
+}
+
+input CourseInput {
+    title: String!
+    description: String
+    categoryId: ID!
+    professorId: ID!
+    youtubeVideoId: String
+    price: Float
+}
