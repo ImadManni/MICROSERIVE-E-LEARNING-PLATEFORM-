@@ -1,0 +1,55 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: cours-service
+          uri: lb://cours-service
+          predicates:
+            - Path=/api/cours/**, /api/courses/**, /api/data/**, /graphql/**
+          filters:
+            - RewritePath=/api/cours/(?<segment>.*), /api/courses/$\{segment}
+        
+        - id: inscription-service
+          uri: lb://inscription-service
+          predicates:
+            - Path=/api/inscriptions/**, /auth/**, /oauth2/**
+          filters:
+            - RewritePath=/api/inscriptions/(?<segment>.*), /api/enrollments/$\{segment}
+        
+        - id: statistique-service
+          uri: lb://statistique-service
+          predicates:
+            - Path=/api/stats/**
+      
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            exposedHeaders:
+              - Authorization
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+jwt:
+  secret: ${JWT_SECRET:mySecretKeyForJWTTokenGeneration123456789}
