@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VideoStatisticDTO {
-    private Long id;
-    private Long courseId;
+    private String id;
+    private String courseId;
     private String youtubeVideoId;
     private Long views;
     private Long likes;

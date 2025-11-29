@@ -1,7 +1,7 @@
 package com.learning.inscription.security;
 
 import com.learning.inscription.entity.Student;
-import com.learning.inscription.repository.StudentRepository;
+import com.learning.inscription.repository.FirebaseStudentRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,7 +23,7 @@ import java.util.Set;
 @Slf4j
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final StudentRepository studentRepository;
+    private final FirebaseStudentRepository studentRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override

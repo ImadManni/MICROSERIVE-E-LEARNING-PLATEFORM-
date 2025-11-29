@@ -7,7 +7,6 @@ import com.learning.statistique.repository.VideoStatisticRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,8 +19,7 @@ public class StatistiqueService {
     private final VideoStatisticRepository statisticRepository;
     private final YouTubeService youTubeService;
 
-    @Transactional
-    public VideoStatisticDTO fetchAndSaveStatistics(Long courseId, String youtubeVideoId) {
+    public VideoStatisticDTO fetchAndSaveStatistics(String courseId, String youtubeVideoId) {
         log.info("Fetching statistics for course {} with YouTube video {}", courseId, youtubeVideoId);
         
         YouTubeVideoResponse response = youTubeService.getVideoStatistics(youtubeVideoId);
@@ -55,15 +53,13 @@ public class StatistiqueService {
         return convertToDTO(saved);
     }
 
-    @Transactional(readOnly = true)
-    public List<VideoStatisticDTO> getStatisticsByCourse(Long courseId) {
+    public List<VideoStatisticDTO> getStatisticsByCourse(String courseId) {
         log.info("Fetching statistics for course: {}", courseId);
         return statisticRepository.findByCourseId(courseId).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
-    @Transactional(readOnly = true)
     public VideoStatisticDTO getLatestStatisticsByVideo(String youtubeVideoId) {
         log.info("Fetching latest statistics for video: {}", youtubeVideoId);
         return statisticRepository.findTopByYoutubeVideoIdOrderByFetchedAtDesc(youtubeVideoId)

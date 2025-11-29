@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { api, type Course, type Category, type Professor } from "@/lib/api"
+import { getCoursesFromFirestore, saveCourseToFirestore, deleteCourseFromFirestore } from "@/lib/firestore-courses"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -48,12 +49,15 @@ export default function AdminCoursesPage() {
 
   const loadData = async () => {
     try {
-      const [coursesRes, catsRes, profsRes] = await Promise.all([
-        api.getCourses(0, 100),
-        api.getCategories(),
-        api.getProfessors(),
+      // Load courses from Firestore
+      const firestoreCourses = await getCoursesFromFirestore()
+      setCourses(firestoreCourses)
+      
+      // Load categories and professors (still from API or mock)
+      const [catsRes, profsRes] = await Promise.all([
+        api.getCategories().catch(() => []),
+        api.getProfessors().catch(() => []),
       ])
-      setCourses(coursesRes.content)
       setCategories(catsRes)
       setProfessors(profsRes)
     } catch (error) {
@@ -140,70 +144,45 @@ export default function AdminCoursesPage() {
   const handleSave = async () => {
     setSaving(true)
     try {
-      const courseData = {
+      const courseData: Partial<Course> = {
         title: formData.title,
         description: formData.description,
-        categoryId: Number(formData.categoryId),
-        professorId: Number(formData.professorId),
+        categoryId: formData.categoryId,
+        professorId: formData.professorId,
         youtubeVideoId: formData.youtubeVideoId,
         price: Number(formData.price),
+        category: categories.find((c) => c.id === formData.categoryId),
+        professor: professors.find((p) => p.id === formData.professorId),
       }
 
-      if (editingCourse) {
-        await api.updateCourse(editingCourse.id, courseData)
-      } else {
-        await api.createCourse(courseData)
-      }
+      // Save to Firestore
+      const savedCourse = await saveCourseToFirestore(
+        courseData,
+        editingCourse ? String(editingCourse.id) : undefined
+      )
+
+      console.log("✅ Course saved to Firestore:", savedCourse)
 
       setDialogOpen(false)
-      loadData()
-    } catch (error) {
+      loadData() // Reload courses from Firestore
+    } catch (error: any) {
       console.error("Failed to save course:", error)
-      // For demo, update locally
-      if (editingCourse) {
-        setCourses(
-          courses.map((c) =>
-            c.id === editingCourse.id
-              ? {
-                  ...c,
-                  ...formData,
-                  categoryId: Number(formData.categoryId),
-                  professorId: Number(formData.professorId),
-                  price: Number(formData.price),
-                }
-              : c,
-          ),
-        )
-      } else {
-        const newCourse: Course = {
-          id: Date.now(),
-          title: formData.title,
-          description: formData.description,
-          categoryId: Number(formData.categoryId),
-          professorId: Number(formData.professorId),
-          youtubeVideoId: formData.youtubeVideoId,
-          price: Number(formData.price),
-          createdAt: new Date().toISOString(),
-          category: categories.find((c) => c.id === Number(formData.categoryId)),
-          professor: professors.find((p) => p.id === Number(formData.professorId)),
-        }
-        setCourses([...courses, newCourse])
-      }
-      setDialogOpen(false)
+      alert(`Failed to save course: ${error.message || "Unknown error"}`)
     } finally {
       setSaving(false)
     }
   }
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: number | string) => {
     if (!confirm("Are you sure you want to delete this course?")) return
 
     try {
-      await api.deleteCourse(id)
-      loadData()
-    } catch (error) {
+      await deleteCourseFromFirestore(String(id))
+      console.log("✅ Course deleted from Firestore")
+      loadData() // Reload courses from Firestore
+    } catch (error: any) {
       console.error("Failed to delete course:", error)
-      setCourses(courses.filter((c) => c.id !== id))
+      alert(`Failed to delete course: ${error.message || "Unknown error"}`)
     }
   }
 
@@ -233,7 +212,7 @@ export default function AdminCoursesPage() {
                 Add Course
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col">
               <DialogHeader>
                 <DialogTitle>{editingCourse ? "Edit Course" : "Add New Course"}</DialogTitle>
                 <DialogDescription>
@@ -241,7 +220,7 @@ export default function AdminCoursesPage() {
                 </DialogDescription>
               </DialogHeader>
 
-              <div className="grid gap-4 py-4">
+              <div className="grid gap-4 py-4 overflow-y-auto flex-1 min-h-0">
                 <div className="grid gap-2">
                   <Label htmlFor="title">Title</Label>
                   <Input
@@ -371,7 +350,7 @@ export default function AdminCoursesPage() {
                 </div>
               </div>
 
-              <DialogFooter>
+              <DialogFooter className="mt-4 flex-shrink-0">
                 <Button variant="outline" onClick={() => setDialogOpen(false)}>
                   Cancel
                 </Button>
@@ -429,7 +408,7 @@ export default function AdminCoursesPage() {
                           <Button variant="ghost" size="icon" onClick={() => handleOpenDialog(course)}>
                             <Pencil className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="icon" onClick={() => handleDelete(course.id)}>
+                          <Button variant="ghost" size="icon" onClick={() => handleDelete(String(course.id))}>
                             <Trash2 className="h-4 w-4 text-destructive" />
                           </Button>
                         </div>

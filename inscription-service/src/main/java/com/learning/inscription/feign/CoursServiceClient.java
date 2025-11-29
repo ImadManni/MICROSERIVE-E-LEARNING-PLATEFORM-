@@ -9,5 +9,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface CoursServiceClient {
     
     @GetMapping("/{id}")
-    CourseDTO getCourseById(@PathVariable Long id);
+    CourseDTO getCourseById(@PathVariable String id);
 }

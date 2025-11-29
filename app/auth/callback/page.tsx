@@ -2,12 +2,13 @@
 
 import { useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { api } from "@/lib/api"
+import { useAuth } from "@/contexts/auth-context"
 import { Loader2 } from "lucide-react"
 
-export default function OAuthCallbackPage() {
+export default function AuthCallbackPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { login } = useAuth()
 
   useEffect(() => {
     const token = searchParams.get("token")
@@ -17,7 +18,7 @@ export default function OAuthCallbackPage() {
 
     if (token && email && name && id) {
       const userData = {
-        id: parseInt(id),
+        id,
         email,
         fullName: name,
         roles: ["ROLE_STUDENT"],
@@ -25,7 +26,6 @@ export default function OAuthCallbackPage() {
 
       localStorage.setItem("token", token)
       localStorage.setItem("user", JSON.stringify(userData))
-      api.setToken(token)
 
       if (typeof document !== "undefined") {
         const expires = new Date()
@@ -38,14 +38,14 @@ export default function OAuthCallbackPage() {
         window.location.reload()
       }, 500)
     } else {
-      router.push("/login?error=oauth2_failed")
+      router.push("/login?error=oauth2_callback_failed")
     }
   }, [searchParams, router])
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="min-h-screen flex items-center justify-center">
       <div className="text-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto mb-4" />
+        <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-primary" />
         <p className="text-muted-foreground">Completing authentication...</p>
       </div>
     </div>

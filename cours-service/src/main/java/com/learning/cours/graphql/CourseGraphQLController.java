@@ -25,7 +25,7 @@ public class CourseGraphQLController {
     private final CourseService courseService;
 
     @QueryMapping
-    public Course course(@Argument Long id) {
+    public Course course(@Argument String id) {
         return courseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
     }

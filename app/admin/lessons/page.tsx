@@ -112,7 +112,7 @@ export default function AdminLessonsPage() {
         title: formData.title,
         content: formData.content,
         duration: Number(formData.duration),
-        courseId: Number(formData.courseId),
+        courseId: formData.courseId,
       }
       if (editingLesson) {
         await api.updateLesson(editingLesson.id, lessonData)
@@ -127,7 +127,7 @@ export default function AdminLessonsPage() {
         setLessons(
           lessons.map((l) =>
             l.id === editingLesson.id
-              ? { ...l, ...formData, duration: Number(formData.duration), courseId: Number(formData.courseId) }
+              ? { ...l, ...formData, duration: Number(formData.duration), courseId: formData.courseId }
               : l,
           ),
         )
@@ -135,11 +135,11 @@ export default function AdminLessonsPage() {
         setLessons([
           ...lessons,
           {
-            id: Date.now(),
+            id: String(Date.now()),
             title: formData.title,
             content: formData.content,
             duration: Number(formData.duration),
-            courseId: Number(formData.courseId),
+            courseId: formData.courseId,
           },
         ])
       }

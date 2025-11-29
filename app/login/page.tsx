@@ -14,7 +14,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Separator } from "@/components/ui/separator"
 import { FadeIn } from "@/components/gsap-animations"
 import { GraduationCap, Mail, Lock, Loader2 } from "lucide-react"
-import { GoogleSignInButton } from "@/components/google-signin-button"
+import { FirebaseGoogleSignInButton } from "@/components/firebase-google-signin-button"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -39,32 +39,36 @@ export default function LoginPage() {
     }
   }
 
-  const handleGoogleSuccess = async (email: string, name: string, token: string) => {
+  const handleGoogleSuccess = async (email: string, name: string, idToken: string, userId: string) => {
     setError("")
     setLoading(true)
 
     try {
-      const response = await api.loginWithGoogle(token)
+      console.log("Firebase authentication successful, user saved to Firestore")
+      
       const userData = {
-        id: response.id,
-        email: response.email,
-        fullName: response.fullName,
-        roles: response.roles,
+        id: userId,
+        email: email,
+        fullName: name,
+        roles: ["ROLE_STUDENT"],
       }
-      localStorage.setItem("token", response.token)
+      
+      localStorage.setItem("token", idToken)
       localStorage.setItem("user", JSON.stringify(userData))
-      api.setToken(response.token)
+      api.setToken(idToken)
       
       if (typeof document !== "undefined") {
         const expires = new Date()
         expires.setTime(expires.getTime() + 7 * 24 * 60 * 60 * 1000)
-        document.cookie = `token=${response.token};expires=${expires.toUTCString()};path=/;SameSite=Lax`
+        document.cookie = `token=${idToken};expires=${expires.toUTCString()};path=/;SameSite=Lax`
       }
 
+      console.log("User authenticated and saved to Firestore. Redirecting to dashboard...")
       router.push("/dashboard")
       setTimeout(() => window.location.reload(), 500)
-    } catch (err) {
-      setError("Google authentication failed. Please try again.")
+    } catch (err: any) {
+      console.error("Firebase authentication error:", err)
+      setError(`Authentication failed: ${err.message || "Please try again."}`)
       setLoading(false)
     }
   }
@@ -88,7 +92,7 @@ export default function LoginPage() {
           </CardHeader>
 
           <CardContent className="space-y-4">
-            <GoogleSignInButton
+            <FirebaseGoogleSignInButton
               onSuccess={handleGoogleSuccess}
               onError={handleGoogleError}
               disabled={loading}

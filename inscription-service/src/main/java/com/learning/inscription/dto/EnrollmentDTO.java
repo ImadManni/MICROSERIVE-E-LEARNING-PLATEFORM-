@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EnrollmentDTO {
-    private Long id;
-    private Long studentId;
-    private Long courseId;
+    private String id;
+    private String studentId;
+    private String courseId;
     private LocalDateTime enrollmentDate;
     private Integer progress;
     private CourseDTO course;

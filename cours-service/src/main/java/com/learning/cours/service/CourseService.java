@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,22 +25,19 @@ public class CourseService {
     private final ProfessorRepository professorRepository;
     private final CourseMapper courseMapper;
 
-    @Transactional(readOnly = true)
     public Page<CourseDTO> getAllCourses(Pageable pageable) {
         log.info("Fetching all courses with pagination: {}", pageable);
         return courseRepository.findAll(pageable)
                 .map(courseMapper::toDTO);
     }
 
-    @Transactional(readOnly = true)
-    public CourseDTO getCourseById(Long id) {
+    public CourseDTO getCourseById(String id) {
         log.info("Fetching course with id: {}", id);
         Course course = courseRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found with id: " + id));
         return courseMapper.toDTO(course);
     }
 
-    @Transactional
     public CourseDTO createCourse(CourseDTO courseDTO) {
         log.info("Creating new course: {}", courseDTO.getTitle());
         
@@ -65,8 +61,7 @@ public class CourseService {
         return courseMapper.toDTO(savedCourse);
     }
 
-    @Transactional
-    public CourseDTO updateCourse(Long id, CourseDTO courseDTO) {
+    public CourseDTO updateCourse(String id, CourseDTO courseDTO) {
         log.info("Updating course with id: {}", id);
         
         Course course = courseRepository.findById(id)
@@ -95,8 +90,7 @@ public class CourseService {
         return courseMapper.toDTO(updatedCourse);
     }
 
-    @Transactional
-    public void deleteCourse(Long id) {
+    public void deleteCourse(String id) {
         log.info("Deleting course with id: {}", id);
         if (!courseRepository.existsById(id)) {
             throw new ResourceNotFoundException("Course not found with id: " + id);
@@ -105,7 +99,6 @@ public class CourseService {
         log.info("Course deleted successfully with id: {}", id);
     }
 
-    @Transactional(readOnly = true)
     public Page<CourseDTO> searchCourses(String keyword, Pageable pageable) {
         log.info("Searching courses with keyword: {}", keyword);
         return courseRepository.searchCourses(keyword, pageable)

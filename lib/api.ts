@@ -1,44 +1,44 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
 
 const MOCK_CATEGORIES: Category[] = [
-  { id: 1, name: "Web Development", description: "Learn web technologies" },
-  { id: 2, name: "Data Science", description: "Master data analysis and ML" },
-  { id: 3, name: "Design", description: "UI/UX and graphic design" },
-  { id: 4, name: "Marketing", description: "Digital marketing strategies" },
-  { id: 5, name: "Mobile Development", description: "Build mobile apps" },
+  { id: "1", name: "Web Development", description: "Learn web technologies" },
+  { id: "2", name: "Data Science", description: "Master data analysis and ML" },
+  { id: "3", name: "Design", description: "UI/UX and graphic design" },
+  { id: "4", name: "Marketing", description: "Digital marketing strategies" },
+  { id: "5", name: "Mobile Development", description: "Build mobile apps" },
 ]
 
 const MOCK_PROFESSORS: Professor[] = [
   {
-    id: 1,
+    id: "1",
     fullName: "John Doe",
     email: "john@example.com",
     bio: "Senior Web Developer with 10+ years experience",
     avatarUrl: "/male-professor.png",
   },
   {
-    id: 2,
+    id: "2",
     fullName: "Jane Smith",
     email: "jane@example.com",
     bio: "Data Scientist and AI researcher",
     avatarUrl: "/female-professor.png",
   },
   {
-    id: 3,
+    id: "3",
     fullName: "Mike Johnson",
     email: "mike@example.com",
     bio: "Machine Learning expert",
     avatarUrl: "/male-teacher.png",
   },
   {
-    id: 4,
+    id: "4",
     fullName: "Sarah Wilson",
     email: "sarah@example.com",
     bio: "Award-winning UI/UX designer",
     avatarUrl: "/female-designer.png",
   },
   {
-    id: 5,
+    id: "5",
     fullName: "Emily Brown",
     email: "emily@example.com",
     bio: "Digital Marketing strategist",
@@ -48,11 +48,11 @@ const MOCK_PROFESSORS: Professor[] = [
 
 const MOCK_COURSES: Course[] = [
   {
-    id: 1,
+    id: "1",
     title: "Complete Web Development Bootcamp",
     description: "Learn HTML, CSS, JavaScript, React, Node.js and more in this comprehensive course.",
-    categoryId: 1,
-    professorId: 1,
+    categoryId: "1",
+    professorId: "1",
     youtubeVideoId: "dQw4w9WgXcQ",
     price: 99.99,
     createdAt: new Date().toISOString(),
@@ -60,11 +60,11 @@ const MOCK_COURSES: Course[] = [
     professor: MOCK_PROFESSORS[0],
   },
   {
-    id: 2,
+    id: "2",
     title: "Python for Data Science",
     description: "Master Python programming and data science techniques with hands-on projects.",
-    categoryId: 2,
-    professorId: 2,
+    categoryId: "2",
+    professorId: "2",
     youtubeVideoId: "rfscVS0vtbw",
     price: 79.99,
     createdAt: new Date().toISOString(),
@@ -72,11 +72,11 @@ const MOCK_COURSES: Course[] = [
     professor: MOCK_PROFESSORS[1],
   },
   {
-    id: 3,
+    id: "3",
     title: "Machine Learning A-Z",
     description: "Learn machine learning algorithms and build AI applications from scratch.",
-    categoryId: 2,
-    professorId: 3,
+    categoryId: "2",
+    professorId: "3",
     youtubeVideoId: "GwIo3gDZCVQ",
     price: 129.99,
     createdAt: new Date().toISOString(),
@@ -84,11 +84,11 @@ const MOCK_COURSES: Course[] = [
     professor: MOCK_PROFESSORS[2],
   },
   {
-    id: 4,
+    id: "4",
     title: "UI/UX Design Masterclass",
     description: "Create stunning user interfaces and improve user experience with design principles.",
-    categoryId: 3,
-    professorId: 4,
+    categoryId: "3",
+    professorId: "4",
     youtubeVideoId: "c9Wg6Cb_YlU",
     price: 89.99,
     createdAt: new Date().toISOString(),
@@ -96,11 +96,11 @@ const MOCK_COURSES: Course[] = [
     professor: MOCK_PROFESSORS[3],
   },
   {
-    id: 5,
+    id: "5",
     title: "React Native Mobile Development",
     description: "Build cross-platform mobile apps with React Native and JavaScript.",
-    categoryId: 5,
-    professorId: 1,
+    categoryId: "5",
+    professorId: "1",
     youtubeVideoId: "0-S5a0eXPoc",
     price: 109.99,
     createdAt: new Date().toISOString(),
@@ -108,11 +108,11 @@ const MOCK_COURSES: Course[] = [
     professor: MOCK_PROFESSORS[0],
   },
   {
-    id: 6,
+    id: "6",
     title: "Digital Marketing Complete Guide",
     description: "Master SEO, social media marketing, and digital advertising strategies.",
-    categoryId: 4,
-    professorId: 5,
+    categoryId: "4",
+    professorId: "5",
     youtubeVideoId: "nU-IIXBWlS4",
     price: 69.99,
     createdAt: new Date().toISOString(),
@@ -121,34 +121,34 @@ const MOCK_COURSES: Course[] = [
   },
 ]
 
-const MOCK_LESSONS: Record<number, Lesson[]> = {
-  1: [
-    { id: 1, title: "Introduction to HTML", content: "Learn the basics of HTML markup", duration: 45, courseId: 1 },
-    { id: 2, title: "CSS Fundamentals", content: "Styling your web pages", duration: 60, courseId: 1 },
-    { id: 3, title: "JavaScript Basics", content: "Programming fundamentals", duration: 90, courseId: 1 },
-    { id: 4, title: "React Introduction", content: "Building modern UIs", duration: 75, courseId: 1 },
+const MOCK_LESSONS: Record<string, Lesson[]> = {
+  "1": [
+    { id: "1", title: "Introduction to HTML", content: "Learn the basics of HTML markup", duration: 45, courseId: "1" },
+    { id: "2", title: "CSS Fundamentals", content: "Styling your web pages", duration: 60, courseId: "1" },
+    { id: "3", title: "JavaScript Basics", content: "Programming fundamentals", duration: 90, courseId: "1" },
+    { id: "4", title: "React Introduction", content: "Building modern UIs", duration: 75, courseId: "1" },
   ],
-  2: [
-    { id: 5, title: "Python Basics", content: "Getting started with Python", duration: 60, courseId: 2 },
-    { id: 6, title: "NumPy & Pandas", content: "Data manipulation libraries", duration: 90, courseId: 2 },
-    { id: 7, title: "Data Visualization", content: "Creating charts and graphs", duration: 75, courseId: 2 },
+  "2": [
+    { id: "5", title: "Python Basics", content: "Getting started with Python", duration: 60, courseId: "2" },
+    { id: "6", title: "NumPy & Pandas", content: "Data manipulation libraries", duration: 90, courseId: "2" },
+    { id: "7", title: "Data Visualization", content: "Creating charts and graphs", duration: 75, courseId: "2" },
   ],
-  3: [
-    { id: 8, title: "ML Fundamentals", content: "Understanding machine learning", duration: 60, courseId: 3 },
-    { id: 9, title: "Supervised Learning", content: "Classification and regression", duration: 90, courseId: 3 },
-    { id: 10, title: "Neural Networks", content: "Deep learning basics", duration: 120, courseId: 3 },
+  "3": [
+    { id: "8", title: "ML Fundamentals", content: "Understanding machine learning", duration: 60, courseId: "3" },
+    { id: "9", title: "Supervised Learning", content: "Classification and regression", duration: 90, courseId: "3" },
+    { id: "10", title: "Neural Networks", content: "Deep learning basics", duration: 120, courseId: "3" },
   ],
-  4: [
-    { id: 11, title: "Design Principles", content: "Core UI/UX concepts", duration: 45, courseId: 4 },
-    { id: 12, title: "Figma Mastery", content: "Using Figma for design", duration: 60, courseId: 4 },
+  "4": [
+    { id: "11", title: "Design Principles", content: "Core UI/UX concepts", duration: 45, courseId: "4" },
+    { id: "12", title: "Figma Mastery", content: "Using Figma for design", duration: 60, courseId: "4" },
   ],
-  5: [
-    { id: 13, title: "React Native Setup", content: "Environment configuration", duration: 30, courseId: 5 },
-    { id: 14, title: "Components & Navigation", content: "Building mobile UIs", duration: 75, courseId: 5 },
+  "5": [
+    { id: "13", title: "React Native Setup", content: "Environment configuration", duration: 30, courseId: "5" },
+    { id: "14", title: "Components & Navigation", content: "Building mobile UIs", duration: 75, courseId: "5" },
   ],
-  6: [
-    { id: 15, title: "SEO Fundamentals", content: "Search engine optimization", duration: 60, courseId: 6 },
-    { id: 16, title: "Social Media Marketing", content: "Platform strategies", duration: 45, courseId: 6 },
+  "6": [
+    { id: "15", title: "SEO Fundamentals", content: "Search engine optimization", duration: 60, courseId: "6" },
+    { id: "16", title: "Social Media Marketing", content: "Platform strategies", duration: 45, courseId: "6" },
   ],
 }
 
@@ -161,11 +161,11 @@ export interface PageResponse<T> {
 }
 
 export interface Course {
-  id: number
+  id: string
   title: string
   description: string
-  categoryId: number
-  professorId: number
+  categoryId: string
+  professorId: string
   youtubeVideoId: string
   price: number
   createdAt: string
@@ -175,13 +175,13 @@ export interface Course {
 }
 
 export interface Category {
-  id: number
+  id: string
   name: string
   description: string
 }
 
 export interface Professor {
-  id: number
+  id: string
   fullName: string
   email: string
   bio: string
@@ -189,25 +189,25 @@ export interface Professor {
 }
 
 export interface Lesson {
-  id: number
+  id: string
   title: string
   content: string
   duration: number
-  courseId: number
+  courseId: string
 }
 
 export interface Enrollment {
-  id: number
-  studentId: number
-  courseId: number
+  id: string
+  studentId: string
+  courseId: string
   enrollmentDate: string
   progress: number
   course?: Course
 }
 
 export interface VideoStatistic {
-  id: number
-  courseId: number
+  id: string
+  courseId: string
   views: number
   likes: number
   comments: number
@@ -237,22 +237,37 @@ class ApiClient {
       ;(headers as Record<string, string>)["Authorization"] = `Bearer ${this.token}`
     }
 
-    const response = await fetch(`${this.baseUrl}${endpoint}`, {
-      ...options,
-      headers,
-    })
+    try {
+      const response = await fetch(`${this.baseUrl}${endpoint}`, {
+        ...options,
+        headers,
+      })
 
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.status} ${response.statusText}`)
+      if (!response.ok) {
+        const errorText = await response.text()
+        let errorMessage = `API Error: ${response.status} ${response.statusText}`
+        try {
+          const errorJson = JSON.parse(errorText)
+          errorMessage = errorJson.message || errorMessage
+        } catch {
+          if (errorText) errorMessage = errorText
+        }
+        throw new Error(errorMessage)
+      }
+
+      return response.json()
+    } catch (error: any) {
+      if (error.message && error.message.includes("Failed to fetch") || error.message.includes("NetworkError")) {
+        throw new Error("Cannot connect to backend server. Please ensure all services are running.")
+      }
+      throw error
     }
-
-    return response.json()
   }
 
   // Auth endpoints
   async login(email: string, password: string) {
     try {
-      return await this.request<{ token: string; id: number; email: string; fullName: string; roles: string[] }>(
+      return await this.request<{ token: string; id: string; email: string; fullName: string; roles: string[] }>(
         "/auth/login",
         {
           method: "POST",
@@ -260,10 +275,9 @@ class ApiClient {
         },
       )
     } catch {
-      // Mock response for demo
       return {
         token: "mock-jwt-token-" + Date.now(),
-        id: 1,
+        id: "1",
         email: email,
         fullName: email.split("@")[0],
         roles: ["STUDENT"],
@@ -273,7 +287,7 @@ class ApiClient {
 
   async register(fullName: string, email: string, password: string) {
     try {
-      return await this.request<{ token: string; id: number; email: string; fullName: string; roles: string[] }>(
+      return await this.request<{ token: string; id: string; email: string; fullName: string; roles: string[] }>(
         "/auth/register",
         {
           method: "POST",
@@ -283,7 +297,7 @@ class ApiClient {
     } catch {
       return {
         token: "mock-jwt-token-" + Date.now(),
-        id: 1,
+        id: "1",
         email: email,
         fullName: fullName,
         roles: ["STUDENT"],
@@ -292,26 +306,14 @@ class ApiClient {
   }
 
   async loginWithGoogle(googleToken: string) {
-    try {
-      return await this.request<{ token: string; id: number; email: string; fullName: string; roles: string[] }>(
-        "/auth/google",
-        {
-          method: "POST",
-          body: JSON.stringify({ token: googleToken }),
-        },
-      )
-    } catch {
-      const response = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${googleToken}`)
-      const googleUser = await response.json()
-      
-      return {
-        token: "google-jwt-token-" + Date.now(),
-        id: 1,
-        email: googleUser.email,
-        fullName: googleUser.name,
-        roles: ["ROLE_STUDENT"],
-      }
-    }
+    const response = await this.request<{ token: string; id: string; email: string; fullName: string; roles: string[] }>(
+      "/auth/google",
+      {
+        method: "POST",
+        body: JSON.stringify({ token: googleToken }),
+      },
+    )
+    return response
   }
 
   async getCourses(page = 0, size = 12, sortBy = "createdAt", sortDir = "DESC"): Promise<PageResponse<Course>> {
@@ -331,7 +333,7 @@ class ApiClient {
     }
   }
 
-  async getCourseById(id: number): Promise<Course> {
+  async getCourseById(id: string): Promise<Course> {
     try {
       return await this.request(`/api/cours/courses/${id}`)
     } catch {
@@ -368,11 +370,11 @@ class ApiClient {
       })
     } catch {
       const newCourse: Course = {
-        id: MOCK_COURSES.length + 1,
+        id: String(MOCK_COURSES.length + 1),
         title: course.title || "",
         description: course.description || "",
-        categoryId: course.categoryId || 1,
-        professorId: course.professorId || 1,
+        categoryId: course.categoryId || "1",
+        professorId: course.professorId || "1",
         youtubeVideoId: course.youtubeVideoId || "",
         price: course.price || 0,
         createdAt: new Date().toISOString(),
@@ -384,7 +386,7 @@ class ApiClient {
     }
   }
 
-  async updateCourse(id: number, course: Partial<Course>): Promise<Course> {
+  async updateCourse(id: string, course: Partial<Course>): Promise<Course> {
     try {
       return await this.request(`/api/cours/courses/${id}`, {
         method: "PUT",
@@ -400,7 +402,7 @@ class ApiClient {
     }
   }
 
-  async deleteCourse(id: number): Promise<void> {
+  async deleteCourse(id: string): Promise<void> {
     try {
       return await this.request(`/api/cours/courses/${id}`, { method: "DELETE" })
     } catch {
@@ -425,7 +427,7 @@ class ApiClient {
     }
   }
 
-  async getLessonsByCourse(courseId: number): Promise<Lesson[]> {
+  async getLessonsByCourse(courseId: string): Promise<Lesson[]> {
     try {
       return await this.request(`/api/cours/data/lessons/search/by-course?courseId=${courseId}`)
     } catch {
@@ -437,20 +439,19 @@ class ApiClient {
     try {
       return await this.request("/api/inscriptions/enrollments/my")
     } catch {
-      // Return mock enrollments
       return [
         {
-          id: 1,
-          studentId: 1,
-          courseId: 1,
+          id: "1",
+          studentId: "1",
+          courseId: "1",
           enrollmentDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
           progress: 45,
           course: MOCK_COURSES[0],
         },
         {
-          id: 2,
-          studentId: 1,
-          courseId: 3,
+          id: "2",
+          studentId: "1",
+          courseId: "3",
           enrollmentDate: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
           progress: 20,
           course: MOCK_COURSES[2],
@@ -459,7 +460,7 @@ class ApiClient {
     }
   }
 
-  async enrollInCourse(courseId: number): Promise<Enrollment> {
+  async enrollInCourse(courseId: string): Promise<Enrollment> {
     try {
       return await this.request("/api/inscriptions/enrollments", {
         method: "POST",
@@ -467,8 +468,8 @@ class ApiClient {
       })
     } catch {
       return {
-        id: Date.now(),
-        studentId: 1,
+        id: String(Date.now()),
+        studentId: "1",
         courseId,
         enrollmentDate: new Date().toISOString(),
         progress: 0,
@@ -477,7 +478,7 @@ class ApiClient {
     }
   }
 
-  async updateProgress(enrollmentId: number, progress: number): Promise<Enrollment> {
+  async updateProgress(enrollmentId: string, progress: number): Promise<Enrollment> {
     try {
       return await this.request(`/api/inscriptions/enrollments/${enrollmentId}/progress`, {
         method: "PATCH",
@@ -486,15 +487,15 @@ class ApiClient {
     } catch {
       return {
         id: enrollmentId,
-        studentId: 1,
-        courseId: 1,
+        studentId: "1",
+        courseId: "1",
         enrollmentDate: new Date().toISOString(),
         progress,
       }
     }
   }
 
-  async getCourseStats(courseId: number): Promise<VideoStatistic> {
+  async getCourseStats(courseId: string): Promise<VideoStatistic> {
     try {
       return await this.request(`/api/stats/course/${courseId}`)
     } catch {
@@ -541,7 +542,7 @@ class ApiClient {
       })
     } catch {
       const newCat: Category = {
-        id: MOCK_CATEGORIES.length + 1,
+        id: String(MOCK_CATEGORIES.length + 1),
         name: category.name || "",
         description: category.description || "",
       }
@@ -550,7 +551,7 @@ class ApiClient {
     }
   }
 
-  async updateCategory(id: number, category: Partial<Category>): Promise<Category> {
+  async updateCategory(id: string, category: Partial<Category>): Promise<Category> {
     try {
       return await this.request(`/api/cours/data/categories/${id}`, {
         method: "PUT",
@@ -566,7 +567,7 @@ class ApiClient {
     }
   }
 
-  async deleteCategory(id: number): Promise<void> {
+  async deleteCategory(id: string): Promise<void> {
     try {
       return await this.request(`/api/cours/data/categories/${id}`, { method: "DELETE" })
     } catch {
@@ -583,7 +584,7 @@ class ApiClient {
       })
     } catch {
       const newProf: Professor = {
-        id: MOCK_PROFESSORS.length + 1,
+        id: String(MOCK_PROFESSORS.length + 1),
         fullName: professor.fullName || "",
         email: professor.email || "",
         bio: professor.bio || "",
@@ -594,7 +595,7 @@ class ApiClient {
     }
   }
 
-  async updateProfessor(id: number, professor: Partial<Professor>): Promise<Professor> {
+  async updateProfessor(id: string, professor: Partial<Professor>): Promise<Professor> {
     try {
       return await this.request(`/api/cours/data/professors/${id}`, {
         method: "PUT",
@@ -610,7 +611,7 @@ class ApiClient {
     }
   }
 
-  async deleteProfessor(id: number): Promise<void> {
+  async deleteProfessor(id: string): Promise<void> {
     try {
       return await this.request(`/api/cours/data/professors/${id}`, { method: "DELETE" })
     } catch {
@@ -634,9 +635,9 @@ class ApiClient {
         body: JSON.stringify(lesson),
       })
     } catch {
-      const courseId = lesson.courseId || 1
+      const courseId = lesson.courseId || "1"
       const newLesson: Lesson = {
-        id: Date.now(),
+        id: String(Date.now()),
         title: lesson.title || "",
         content: lesson.content || "",
         duration: lesson.duration || 0,
@@ -648,7 +649,7 @@ class ApiClient {
     }
   }
 
-  async updateLesson(id: number, lesson: Partial<Lesson>): Promise<Lesson> {
+  async updateLesson(id: string, lesson: Partial<Lesson>): Promise<Lesson> {
     try {
       return await this.request(`/api/cours/data/lessons/${id}`, {
         method: "PUT",
@@ -656,7 +657,7 @@ class ApiClient {
       })
     } catch {
       for (const courseId of Object.keys(MOCK_LESSONS)) {
-        const lessons = MOCK_LESSONS[Number(courseId)]
+        const lessons = MOCK_LESSONS[courseId]
         const index = lessons.findIndex((l) => l.id === id)
         if (index >= 0) {
           lessons[index] = { ...lessons[index], ...lesson }
@@ -667,12 +668,12 @@ class ApiClient {
     }
   }
 
-  async deleteLesson(id: number): Promise<void> {
+  async deleteLesson(id: string): Promise<void> {
     try {
       return await this.request(`/api/cours/data/lessons/${id}`, { method: "DELETE" })
     } catch {
       for (const courseId of Object.keys(MOCK_LESSONS)) {
-        const lessons = MOCK_LESSONS[Number(courseId)]
+        const lessons = MOCK_LESSONS[courseId]
         const index = lessons.findIndex((l) => l.id === id)
         if (index >= 0) {
           lessons.splice(index, 1)

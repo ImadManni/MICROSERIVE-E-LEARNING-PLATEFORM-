@@ -10,7 +10,7 @@ import java.util.Set;
 public class AuthResponse {
     private String token;
     private String type = "Bearer";
-    private Long id;
+    private String id;
     private String email;
     private String fullName;
     private Set<String> roles;

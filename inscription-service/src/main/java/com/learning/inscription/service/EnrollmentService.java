@@ -6,13 +6,12 @@ import com.learning.inscription.entity.Enrollment;
 import com.learning.inscription.exception.BusinessException;
 import com.learning.inscription.exception.ResourceNotFoundException;
 import com.learning.inscription.feign.CoursServiceClient;
-import com.learning.inscription.repository.EnrollmentRepository;
-import com.learning.inscription.repository.StudentRepository;
+import com.learning.inscription.repository.FirebaseEnrollmentRepository;
+import com.learning.inscription.repository.FirebaseStudentRepository;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,20 +21,17 @@ import java.util.stream.Collectors;
 @Slf4j
 public class EnrollmentService {
     
-    private final EnrollmentRepository enrollmentRepository;
-    private final StudentRepository studentRepository;
+    private final FirebaseEnrollmentRepository enrollmentRepository;
+    private final FirebaseStudentRepository studentRepository;
     private final CoursServiceClient coursServiceClient;
 
-    @Transactional
-    public EnrollmentDTO enrollStudent(Long studentId, Long courseId) {
+    public EnrollmentDTO enrollStudent(String studentId, String courseId) {
         log.info("Processing enrollment for student {} in course {}", studentId, courseId);
         
-        // Verify student exists
         if (!studentRepository.existsById(studentId)) {
             throw new ResourceNotFoundException("Student not found with id: " + studentId);
         }
         
-        // Verify course exists via Feign Client
         try {
             CourseDTO course = coursServiceClient.getCourseById(courseId);
             log.info("Course found: {}", course.getTitle());
@@ -44,13 +40,11 @@ public class EnrollmentService {
             throw new ResourceNotFoundException("Course not found with id: " + courseId);
         }
         
-        // Check for duplicate enrollment
         if (enrollmentRepository.existsByStudentIdAndCourseId(studentId, courseId)) {
             log.warn("Duplicate enrollment attempt for student {} in course {}", studentId, courseId);
             throw new BusinessException("Student is already enrolled in this course");
         }
         
-        // Create enrollment
         Enrollment enrollment = new Enrollment();
         enrollment.setStudentId(studentId);
         enrollment.setCourseId(courseId);
@@ -62,8 +56,7 @@ public class EnrollmentService {
         return convertToDTO(savedEnrollment);
     }
 
-    @Transactional(readOnly = true)
-    public List<EnrollmentDTO> getStudentEnrollments(Long studentId) {
+    public List<EnrollmentDTO> getStudentEnrollments(String studentId) {
         log.info("Fetching enrollments for student: {}", studentId);
         List<Enrollment> enrollments = enrollmentRepository.findByStudentId(studentId);
         return enrollments.stream()
@@ -71,8 +64,7 @@ public class EnrollmentService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
-    public EnrollmentDTO updateProgress(Long enrollmentId, Integer progress) {
+    public EnrollmentDTO updateProgress(String enrollmentId, Integer progress) {
         log.info("Updating progress for enrollment {} to {}%", enrollmentId, progress);
         
         if (progress < 0 || progress > 100) {
@@ -89,8 +81,7 @@ public class EnrollmentService {
         return convertToDTO(updatedEnrollment);
     }
 
-    @Transactional
-    public void unenrollStudent(Long enrollmentId) {
+    public void unenrollStudent(String enrollmentId) {
         log.info("Unenrolling student with enrollment id: {}", enrollmentId);
         
         if (!enrollmentRepository.existsById(enrollmentId)) {
@@ -109,7 +100,6 @@ public class EnrollmentService {
         dto.setEnrollmentDate(enrollment.getEnrollmentDate());
         dto.setProgress(enrollment.getProgress());
         
-        // Fetch course details
         try {
             CourseDTO course = coursServiceClient.getCourseById(enrollment.getCourseId());
             dto.setCourse(course);

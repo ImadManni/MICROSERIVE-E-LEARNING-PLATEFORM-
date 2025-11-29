@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CourseDTO {
-    private Long id;
+    private String id;
     private String title;
     private String description;
     private BigDecimal price;

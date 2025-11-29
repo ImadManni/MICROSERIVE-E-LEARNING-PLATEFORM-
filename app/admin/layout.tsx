@@ -24,7 +24,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname()
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
-  const isAdmin = user?.roles?.includes("ADMIN") || user?.roles?.includes("PROFESSOR")
+  // Admin emails - add your email here for admin access
+  const adminEmails = [
+    process.env.NEXT_PUBLIC_ADMIN_EMAIL || "",
+    // Add your email here:
+    // "your-email@gmail.com",
+  ].filter(Boolean)
+
+  const isAdmin = 
+    user?.roles?.includes("ADMIN") || 
+    user?.roles?.includes("PROFESSOR") ||
+    (user?.email && adminEmails.includes(user.email)) ||
+    // Temporary: Allow all authenticated users (remove in production)
+    (process.env.NODE_ENV === "development" && user)
 
   if (!isAdmin) {
     return (

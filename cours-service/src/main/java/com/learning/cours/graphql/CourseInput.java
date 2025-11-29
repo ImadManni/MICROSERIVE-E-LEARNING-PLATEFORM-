@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 public class CourseInput {
     private String title;
     private String description;
-    private Long categoryId;
-    private Long professorId;
+    private String categoryId;
+    private String professorId;
     private String youtubeVideoId;
     private BigDecimal price;
 }

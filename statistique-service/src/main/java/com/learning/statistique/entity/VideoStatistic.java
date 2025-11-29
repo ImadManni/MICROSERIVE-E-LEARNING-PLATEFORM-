@@ -1,27 +1,24 @@
 package com.learning.statistique.entity;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "video_statistics")
+@Document(collection = "video_statistics")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class VideoStatistic {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(nullable = false)
-    private Long courseId;
+    private String courseId;
 
-    @Column(nullable = false)
     private String youtubeVideoId;
 
     private Long views;
@@ -31,7 +28,6 @@ public class VideoStatistic {
     private String description;
     private String thumbnailUrl;
 
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
+    @CreatedDate
     private LocalDateTime fetchedAt;
 }

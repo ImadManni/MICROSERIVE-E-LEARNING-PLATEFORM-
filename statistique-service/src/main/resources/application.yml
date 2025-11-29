@@ -6,18 +6,9 @@ spring:
     name: statistique-service
   config:
     import: optional:configserver:http://localhost:8888
-  datasource:
-    url: jdbc:mysql://localhost:3306/statistique_db?createDatabaseIfNotExist=true
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb+srv://imad:4444qqqq@cluster0.aqwy2gi.mongodb.net/statistique_db?retryWrites=true&w=majority&appName=Cluster0}
 
 eureka:
   client:

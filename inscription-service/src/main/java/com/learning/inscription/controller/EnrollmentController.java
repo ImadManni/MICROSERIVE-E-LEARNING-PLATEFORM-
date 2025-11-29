@@ -21,15 +21,15 @@ public class EnrollmentController {
     @PostMapping
     @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<EnrollmentDTO> enrollStudent(
-            @RequestParam Long studentId,
-            @RequestParam Long courseId) {
+            @RequestParam String studentId,
+            @RequestParam String courseId) {
         EnrollmentDTO enrollment = enrollmentService.enrollStudent(studentId, courseId);
         return ResponseEntity.status(HttpStatus.CREATED).body(enrollment);
     }
 
     @GetMapping("/student/{studentId}")
     @PreAuthorize("hasAnyRole('STUDENT', 'ADMIN')")
-    public ResponseEntity<List<EnrollmentDTO>> getStudentEnrollments(@PathVariable Long studentId) {
+    public ResponseEntity<List<EnrollmentDTO>> getStudentEnrollments(@PathVariable String studentId) {
         List<EnrollmentDTO> enrollments = enrollmentService.getStudentEnrollments(studentId);
         return ResponseEntity.ok(enrollments);
     }
@@ -37,7 +37,7 @@ public class EnrollmentController {
     @PutMapping("/{enrollmentId}/progress")
     @PreAuthorize("hasAnyRole('STUDENT', 'PROFESSOR', 'ADMIN')")
     public ResponseEntity<EnrollmentDTO> updateProgress(
-            @PathVariable Long enrollmentId,
+            @PathVariable String enrollmentId,
             @RequestParam Integer progress) {
         EnrollmentDTO enrollment = enrollmentService.updateProgress(enrollmentId, progress);
         return ResponseEntity.ok(enrollment);
@@ -45,7 +45,7 @@ public class EnrollmentController {
 
     @DeleteMapping("/{enrollmentId}")
     @PreAuthorize("hasAnyRole('STUDENT', 'ADMIN')")
-    public ResponseEntity<Void> unenrollStudent(@PathVariable Long enrollmentId) {
+    public ResponseEntity<Void> unenrollStudent(@PathVariable String enrollmentId) {
         enrollmentService.unenrollStudent(enrollmentId);
         return ResponseEntity.noContent().build();
     }

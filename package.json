@@ -53,6 +53,7 @@
     "cmdk": "1.0.4",
     "date-fns": "4.1.0",
     "embla-carousel-react": "8.5.1",
+    "firebase": "^10.14.1",
     "framer-motion": "latest",
     "graphql": "latest",
     "graphql-request": "latest",

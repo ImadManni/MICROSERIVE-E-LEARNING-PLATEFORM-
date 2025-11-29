@@ -28,7 +28,7 @@ export default function LessonViewerPage({ params }: { params: Promise<{ id: str
     try {
       // In real app, fetch enrollment by ID
       const enrollments = await api.getMyEnrollments()
-      const found = enrollments.find((e) => e.id === Number(id))
+      const found = enrollments.find((e) => e.id === id)
       if (found) {
         setEnrollment(found)
         if (found.courseId) {
@@ -38,19 +38,18 @@ export default function LessonViewerPage({ params }: { params: Promise<{ id: str
       }
     } catch (error) {
       console.error("Failed to load enrollment:", error)
-      // Mock data
       setEnrollment({
-        id: Number(id),
-        studentId: 1,
-        courseId: 1,
+        id: id,
+        studentId: "1",
+        courseId: "1",
         enrollmentDate: "2024-01-15",
         progress: 65,
         course: {
-          id: 1,
+          id: "1",
           title: "Complete Web Development Bootcamp",
           description: "Learn HTML, CSS, JavaScript, React, Node.js",
-          categoryId: 1,
-          professorId: 1,
+          categoryId: "1",
+          professorId: "1",
           youtubeVideoId: "dQw4w9WgXcQ",
           price: 99.99,
           createdAt: "2024-01-01",
@@ -58,46 +57,46 @@ export default function LessonViewerPage({ params }: { params: Promise<{ id: str
       })
       setLessons([
         {
-          id: 1,
+          id: "1",
           title: "Introduction to Web Development",
           content: "Overview of web technologies and what you'll learn in this course.",
           duration: 15,
-          courseId: 1,
+          courseId: "1",
         },
         {
-          id: 2,
+          id: "2",
           title: "HTML Fundamentals",
           content: "Learning HTML structure, elements, and semantic markup.",
           duration: 45,
-          courseId: 1,
+          courseId: "1",
         },
         {
-          id: 3,
+          id: "3",
           title: "CSS Styling Basics",
           content: "Styling your web pages with CSS properties and selectors.",
           duration: 60,
-          courseId: 1,
+          courseId: "1",
         },
         {
-          id: 4,
+          id: "4",
           title: "JavaScript Essentials",
           content: "Programming fundamentals with JavaScript.",
           duration: 90,
-          courseId: 1,
+          courseId: "1",
         },
         {
-          id: 5,
+          id: "5",
           title: "DOM Manipulation",
           content: "Interacting with web pages using JavaScript.",
           duration: 45,
-          courseId: 1,
+          courseId: "1",
         },
         {
-          id: 6,
+          id: "6",
           title: "Building Your First Website",
           content: "Hands-on project combining HTML, CSS, and JavaScript.",
           duration: 120,
-          courseId: 1,
+          courseId: "1",
         },
       ])
     } finally {

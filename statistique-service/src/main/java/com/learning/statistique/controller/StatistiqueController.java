@@ -21,14 +21,14 @@ public class StatistiqueController {
 
     @PostMapping("/course/{courseId}")
     public ResponseEntity<VideoStatisticDTO> fetchStatistics(
-            @PathVariable Long courseId,
+            @PathVariable String courseId,
             @RequestParam String youtubeVideoId) {
         VideoStatisticDTO stats = statistiqueService.fetchAndSaveStatistics(courseId, youtubeVideoId);
         return ResponseEntity.ok(stats);
     }
 
     @GetMapping("/course/{courseId}")
-    public ResponseEntity<List<VideoStatisticDTO>> getCourseStatistics(@PathVariable Long courseId) {
+    public ResponseEntity<List<VideoStatisticDTO>> getCourseStatistics(@PathVariable String courseId) {
         List<VideoStatisticDTO> stats = statistiqueService.getStatisticsByCourse(courseId);
         return ResponseEntity.ok(stats);
     }

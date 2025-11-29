@@ -31,10 +31,10 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
   const loadCourse = async () => {
     setLoading(true)
     try {
-      const courseData = await api.getCourseById(Number(id))
+      const courseData = await api.getCourseById(id)
       setCourse(courseData)
 
-      const lessonsData = await api.getLessonsByCourse(Number(id))
+      const lessonsData = await api.getLessonsByCourse(id)
       setLessons(lessonsData)
 
       if (courseData.youtubeVideoId) {
@@ -43,9 +43,8 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
           setStats(statsData)
         } catch (error) {
           console.error("Failed to load video stats:", error)
-          // Try to fetch stats via course ID
           try {
-            const courseStats = await api.getCourseStats(Number(id))
+            const courseStats = await api.getCourseStats(id)
             setStats(courseStats)
           } catch (e) {
             console.error("Failed to load course stats:", e)
@@ -56,18 +55,18 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
       console.error("Failed to load course:", error)
       // Mock data for demo
       setCourse({
-        id: Number(id),
+        id: id,
         title: "Complete Web Development Bootcamp",
         description:
           "Learn HTML, CSS, JavaScript, React, Node.js and more in this comprehensive course. This course will take you from beginner to professional web developer with hands-on projects and real-world examples.",
-        categoryId: 1,
-        professorId: 1,
+        categoryId: "1",
+        professorId: "1",
         youtubeVideoId: "dQw4w9WgXcQ",
         price: 99.99,
         createdAt: new Date().toISOString(),
-        category: { id: 1, name: "Web Development", description: "" },
+        category: { id: "1", name: "Web Development", description: "" },
         professor: {
-          id: 1,
+          id: "1",
           fullName: "John Doe",
           email: "john@example.com",
           bio: "Senior Software Engineer with 10+ years of experience in web development. Passionate about teaching and helping others learn to code.",
@@ -76,32 +75,32 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
       })
       setLessons([
         {
-          id: 1,
+          id: "1",
           title: "Introduction to Web Development",
           content: "Overview of web technologies",
           duration: 15,
-          courseId: Number(id),
+          courseId: id,
         },
-        { id: 2, title: "HTML Fundamentals", content: "Learning HTML structure", duration: 45, courseId: Number(id) },
-        { id: 3, title: "CSS Styling Basics", content: "Styling your web pages", duration: 60, courseId: Number(id) },
+        { id: "2", title: "HTML Fundamentals", content: "Learning HTML structure", duration: 45, courseId: id },
+        { id: "3", title: "CSS Styling Basics", content: "Styling your web pages", duration: 60, courseId: id },
         {
-          id: 4,
+          id: "4",
           title: "JavaScript Essentials",
           content: "Programming fundamentals",
           duration: 90,
-          courseId: Number(id),
+          courseId: id,
         },
         {
-          id: 5,
+          id: "5",
           title: "Building Your First Website",
           content: "Hands-on project",
           duration: 120,
-          courseId: Number(id),
+          courseId: id,
         },
       ])
       setStats({
-        id: 1,
-        courseId: Number(id),
+        id: "1",
+        courseId: id,
         views: 125000,
         likes: 8500,
         comments: 1200,
@@ -120,7 +119,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
 
     setEnrolling(true)
     try {
-      await api.enrollInCourse(Number(id))
+      await api.enrollInCourse(id)
       router.push("/my-courses")
     } catch (error) {
       console.error("Failed to enroll:", error)

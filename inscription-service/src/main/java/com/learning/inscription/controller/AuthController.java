@@ -10,12 +10,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class AuthController {
-    
+
     private final AuthService authService;
 
     @PostMapping("/register")
@@ -34,6 +36,13 @@ public class AuthController {
     public ResponseEntity<AuthResponse> refreshToken(@RequestHeader("Authorization") String token) {
         String jwt = token.replace("Bearer ", "");
         AuthResponse response = authService.refreshToken(jwt);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/google")
+    public ResponseEntity<AuthResponse> loginWithGoogle(@RequestBody Map<String, String> request) {
+        String token = request.get("token");
+        AuthResponse response = authService.loginWithGoogle(token);
         return ResponseEntity.ok(response);
     }
 }
