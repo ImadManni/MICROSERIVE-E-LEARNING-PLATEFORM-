@@ -1,0 +1,171 @@
+========================================
+GraphQL Course Queries - Ready to Use
+========================================
+
+GraphQL Endpoint: http://localhost:8081/graphql
+
+Copy and paste these queries into graphql-test.html or any GraphQL client:
+
+--------------------------------------------------
+1. GET ALL COURSES (Simple)
+--------------------------------------------------
+{
+  courses {
+    id
+    title
+    description
+    price
+  }
+}
+
+--------------------------------------------------
+2. GET ALL COURSES (Detailed with Relations)
+--------------------------------------------------
+{
+  courses {
+    id
+    title
+    description
+    category {
+      id
+      name
+      description
+    }
+    professor {
+      id
+      fullName
+      email
+    }
+    youtubeVideoId
+    price
+    createdAt
+    lessons {
+      id
+      title
+      duration
+    }
+  }
+}
+
+--------------------------------------------------
+3. GET SINGLE COURSE BY ID
+--------------------------------------------------
+{
+  course(id: "1") {
+    id
+    title
+    description
+    category {
+      id
+      name
+    }
+    professor {
+      id
+      fullName
+      email
+    }
+    price
+    youtubeVideoId
+    createdAt
+  }
+}
+
+--------------------------------------------------
+4. CREATE NEW COURSE (Mutation)
+--------------------------------------------------
+mutation {
+  createCourse(input: {
+    title: "Complete Spring Boot Masterclass"
+    description: "Learn Spring Boot framework from scratch. Build REST APIs, work with databases, and implement security."
+    categoryId: "1"
+    professorId: "1"
+    youtubeVideoId: "dQw4w9WgXcQ"
+    price: 149.99
+  }) {
+    id
+    title
+    description
+    price
+    category {
+      id
+      name
+    }
+    professor {
+      id
+      fullName
+    }
+  }
+}
+
+--------------------------------------------------
+5. CREATE REACT NATIVE COURSE
+--------------------------------------------------
+mutation {
+  createCourse(input: {
+    title: "React Native Mobile Development"
+    description: "Build cross-platform mobile apps with React Native. Learn navigation, state management, and native modules."
+    categoryId: "1"
+    professorId: "1"
+    youtubeVideoId: "f8Z9JyB2EIE"
+    price: 199.99
+  }) {
+    id
+    title
+    price
+  }
+}
+
+--------------------------------------------------
+6. CREATE PYTHON COURSE
+--------------------------------------------------
+mutation {
+  createCourse(input: {
+    title: "Python Programming Masterclass"
+    description: "Master Python programming from basics to advanced. Learn data structures, OOP, and popular frameworks."
+    categoryId: "2"
+    professorId: "1"
+    youtubeVideoId: "rfscVS0vtbw"
+    price: 129.99
+  }) {
+    id
+    title
+    description
+    price
+  }
+}
+
+--------------------------------------------------
+7. GET COURSES WITH FILTERS (if supported)
+--------------------------------------------------
+{
+  courses {
+    id
+    title
+    price
+    category {
+      name
+    }
+  }
+}
+
+--------------------------------------------------
+USAGE INSTRUCTIONS
+--------------------------------------------------
+
+1. Open graphql-test.html in your browser
+2. Copy any query above
+3. Paste into the query input field
+4. Click "Execute Query"
+5. View results in the response section
+
+OR use curl:
+
+curl -X POST http://localhost:8081/graphql \
+  -H "Content-Type: application/json" \
+  -d '{"query": "{ courses { id title description price } }"}'
+
+OR use PowerShell:
+
+$body = @{ query = "{ courses { id title description price } }" } | ConvertTo-Json
+Invoke-RestMethod -Uri "http://localhost:8081/graphql" -Method Post -Body $body -ContentType "application/json"
+

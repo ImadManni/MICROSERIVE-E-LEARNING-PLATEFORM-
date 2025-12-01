@@ -8,12 +8,37 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface CourseMapper {
     
-    @Mapping(target = "categoryId", source = "category.id")
-    @Mapping(target = "categoryName", source = "category.name")
-    @Mapping(target = "professorId", source = "professor.id")
-    @Mapping(target = "professorName", source = "professor.fullName")
-    @Mapping(target = "lessonsCount", expression = "java(course.getLessons().size())")
-    CourseDTO toDTO(Course course);
+    default CourseDTO toDTO(Course course) {
+        if (course == null) {
+            return null;
+        }
+        
+        CourseDTO dto = new CourseDTO();
+        dto.setId(course.getId());
+        dto.setTitle(course.getTitle());
+        dto.setDescription(course.getDescription());
+        dto.setYoutubeVideoId(course.getYoutubeVideoId());
+        dto.setPrice(course.getPrice());
+        dto.setCreatedAt(course.getCreatedAt());
+        
+        if (course.getCategory() != null) {
+            dto.setCategoryId(course.getCategory().getId());
+            dto.setCategoryName(course.getCategory().getName());
+        }
+        
+        if (course.getProfessor() != null) {
+            dto.setProfessorId(course.getProfessor().getId());
+            dto.setProfessorName(course.getProfessor().getFullName());
+        }
+        
+        if (course.getLessons() != null) {
+            dto.setLessonsCount(course.getLessons().size());
+        } else {
+            dto.setLessonsCount(0);
+        }
+        
+        return dto;
+    }
     
     Course toEntity(CourseDTO courseDTO);
 }

@@ -1,0 +1,63 @@
+graph TB
+    subgraph "Client Layer"
+        Browser[🌐 Browser]
+        Frontend[⚛️ Next.js Frontend<br/>Port 3000]
+    end
+    
+    subgraph "API Gateway"
+        Gateway[🚪 Gateway Service<br/>Port 8080]
+        JWT[🔑 JWT Auth]
+    end
+    
+    subgraph "Service Discovery"
+        Eureka[🔍 Eureka Server<br/>Port 8761]
+        Config[⚙️ Config Server<br/>Port 8888]
+    end
+    
+    subgraph "Microservices"
+        Cours[📚 Cours Service<br/>Port 8081<br/>GraphQL + REST]
+        Inscription[👥 Inscription Service<br/>Port 8082<br/>Auth + Enrollment]
+        Statistique[📊 Statistique Service<br/>Port 8083<br/>Analytics]
+    end
+    
+    subgraph "Data Storage"
+        MySQL1[(🗄️ MySQL<br/>cours_db)]
+        MySQL2[(🗄️ MySQL<br/>statistique_db)]
+        Firestore[(🔥 Firebase Firestore<br/>students, enrollments, courses)]
+    end
+    
+    subgraph "External APIs"
+        Google[🔐 Google OAuth]
+        YouTube[📺 YouTube Data API]
+        FirebaseAuth[🔥 Firebase Auth]
+    end
+    
+    Browser --> Frontend
+    Frontend --> Gateway
+    Frontend --> FirebaseAuth
+    Frontend --> Firestore
+    
+    Gateway --> JWT
+    Gateway --> Eureka
+    Gateway --> Cours
+    Gateway --> Inscription
+    Gateway --> Statistique
+    
+    Cours --> Eureka
+    Cours --> Config
+    Cours --> MySQL1
+    Cours --> Firestore
+    
+    Inscription --> Eureka
+    Inscription --> Config
+    Inscription --> Firestore
+    Inscription --> Google
+    Inscription --> FirebaseAuth
+    
+    Statistique --> Eureka
+    Statistique --> Config
+    Statistique --> MySQL2
+    Statistique --> YouTube
+    
+    Inscription -.->|Feign Client| Cours
+

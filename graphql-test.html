@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GraphQL Endpoint Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 30px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .status {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .status.loading {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .query-section {
+            margin-bottom: 30px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-right: 10px;
+        }
+        
+        button:hover {
+            background: #5568d3;
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .response-section {
+            margin-top: 30px;
+        }
+        
+        .response-box {
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            min-height: 100px;
+            max-height: 500px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .examples {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .examples h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .example-query {
+            background: white;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 3px solid #667eea;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .example-query:hover {
+            background: #e9ecef;
+        }
+        
+        .example-query code {
+            display: block;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 GraphQL Endpoint Test</h1>
+        <p class="subtitle">Test your GraphQL endpoint at <strong>http://localhost:8081/graphql</strong></p>
+        
+        <div id="status" class="status loading">
+            ⏳ Checking connection...
+        </div>
+        
+        <div class="query-section">
+            <label for="queryInput">GraphQL Query:</label>
+            <textarea id="queryInput" placeholder='Enter your GraphQL query here...'>{ courses { id title description category { id name } professor { id fullName } price } }</textarea>
+        </div>
+        
+        <button onclick="testQuery()">▶️ Execute Query</button>
+        <button onclick="testConnection()">🔄 Test Connection</button>
+        
+        <div class="response-section">
+            <label>Response:</label>
+            <div id="response" class="response-box">Click "Execute Query" to see results...</div>
+        </div>
+        
+        <div class="examples">
+            <h3>📝 Example Queries:</h3>
+            
+            <div class="example-query" onclick="setQuery('{ courses { id title description } }')">
+                <code>Get all courses (simple)</code>
+            </div>
+            
+            <div class="example-query" onclick="setQuery('{ courses { id title description category { id name } professor { id fullName email } price createdAt } }')">
+                <code>Get all courses (detailed)</code>
+            </div>
+            
+            <div class="example-query" onclick="setQuery('{ course(id: \"1\") { id title description category { name } professor { fullName } } }')">
+                <code>Get single course by ID</code>
+            </div>
+            
+            <div class="example-query" onclick="setQuery('mutation { createCourse(input: { title: \"Introduction to Spring Boot\" description: \"Learn Spring Boot framework from scratch\" categoryId: \"1\" professorId: \"1\" youtubeVideoId: \"dQw4w9WgXcQ\" price: 99.99 }) { id title description price } }')">
+                <code>Create Course - Spring Boot</code>
+            </div>
+            
+            <div class="example-query" onclick="setQuery('mutation { createCourse(input: { title: \"React Native Mobile Development\" description: \"Build cross-platform mobile apps\" categoryId: \"1\" professorId: \"1\" youtubeVideoId: \"f8Z9JyB2EIE\" price: 149.99 }) { id title description price } }')">
+                <code>Create Course - React Native</code>
+            </div>
+            
+            <div class="example-query" onclick="setQuery('mutation { createCourse(input: { title: \"GraphQL API Development\" description: \"Master GraphQL queries and mutations\" categoryId: \"1\" professorId: \"1\" youtubeVideoId: \"ed8SzALpx1Q\" price: 129.99 }) { id title description price } }')">
+                <code>Create Course - GraphQL</code>
+            </div>
+            
+            <div class="example-query" onclick="setQuery('mutation { createCourse(input: { title: \"Microservices Architecture\" description: \"Learn microservices with Spring Boot and Eureka\" categoryId: \"1\" professorId: \"1\" youtubeVideoId: \"Yy8OTUY8STk\" price: 199.99 }) { id title description price } }')">
+                <code>Create Course - Microservices</code>
+            </div>
+            
+            <div class="example-query" onclick="setQuery('mutation { createCourse(input: { title: \"Docker & Kubernetes\" description: \"Containerize and orchestrate applications\" categoryId: \"1\" professorId: \"1\" youtubeVideoId: \"3c-iBn73dDE\" price: 179.99 }) { id title description price } }')">
+                <code>Create Course - Docker & Kubernetes</code>
+            </div>
+            
+            <div class="example-query" onclick="setQuery('mutation { createCourse(input: { title: \"Firebase Integration\" description: \"Integrate Firebase Auth and Firestore\" categoryId: \"1\" professorId: \"1\" youtubeVideoId: \"9kRgVxUL16s\" price: 119.99 }) { id title description price } }')">
+                <code>Create Course - Firebase</code>
+            </div>
+            
+            <div class="example-query" onclick="setQuery('{ courses { id title description lessons { id title duration } } }')">
+                <code>Get courses with lessons</code>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const graphqlUrl = 'http://localhost:8081/graphql';
+        
+        function setQuery(query) {
+            document.getElementById('queryInput').value = query;
+        }
+        
+        function updateStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = 'status ' + type;
+        }
+        
+        async function testConnection() {
+            updateStatus('⏳ Testing connection...', 'loading');
+            
+            try {
+                const response = await fetch(graphqlUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: '{ __typename }'
+                    })
+                });
+                
+                if (response.ok) {
+                    updateStatus('✅ Connection successful! GraphQL endpoint is working.', 'success');
+                } else {
+                    updateStatus('⚠️ Connection failed: ' + response.status + ' ' + response.statusText, 'error');
+                }
+            } catch (error) {
+                updateStatus('❌ Connection error: ' + error.message, 'error');
+            }
+        }
+        
+        async function testQuery() {
+            const query = document.getElementById('queryInput').value.trim();
+            
+            if (!query) {
+                updateStatus('❌ Please enter a GraphQL query', 'error');
+                return;
+            }
+            
+            updateStatus('⏳ Executing query...', 'loading');
+            document.getElementById('response').textContent = 'Loading...';
+            
+            try {
+                const response = await fetch(graphqlUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: query
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    updateStatus('✅ Query executed successfully!', 'success');
+                    document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+                    
+                    if (data.data && data.data.courses) {
+                        const count = data.data.courses.length;
+                        updateStatus(`✅ Query successful! Found ${count} course(s)`, 'success');
+                    } else if (data.errors) {
+                        updateStatus('⚠️ Query returned errors', 'error');
+                    }
+                } else {
+                    updateStatus('❌ Query failed: ' + response.status, 'error');
+                    document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+                }
+            } catch (error) {
+                updateStatus('❌ Error: ' + error.message, 'error');
+                document.getElementById('response').textContent = 'Error: ' + error.message + '\n\nMake sure the service is running on port 8081.';
+            }
+        }
+        
+        // Test connection on page load
+        window.onload = function() {
+            testConnection();
+        };
+    </script>
+</body>
+</html>
+

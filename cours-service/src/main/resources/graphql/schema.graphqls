@@ -11,8 +11,8 @@ type Course {
     id: ID!
     title: String!
     description: String
-    category: Category!
-    professor: Professor!
+    category: Category
+    professor: Professor
     youtubeVideoId: String
     price: Float
     createdAt: String

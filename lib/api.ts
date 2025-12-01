@@ -364,6 +364,21 @@ class ApiClient {
 
   async createCourse(course: Partial<Course>): Promise<Course> {
     try {
+      // Try direct cours-service endpoint first, then gateway
+      try {
+        const response = await fetch("http://localhost:8081/api/courses", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(course),
+        })
+        if (response.ok) {
+          return await response.json()
+        }
+      } catch (e) {
+        // Fallback to gateway
+      }
       return await this.request("/api/cours/courses", {
         method: "POST",
         body: JSON.stringify(course),

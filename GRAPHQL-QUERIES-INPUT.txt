@@ -1,0 +1,90 @@
+========================================
+GraphQL Test Queries - Copy & Paste
+========================================
+
+Endpoint: http://localhost:8081/graphql
+
+--------------------------------------------------
+QUERY 1: Get All Courses (Simple)
+--------------------------------------------------
+{
+  courses {
+    id
+    title
+    description
+    price
+  }
+}
+
+--------------------------------------------------
+QUERY 2: Get All Courses (Detailed)
+--------------------------------------------------
+{
+  courses {
+    id
+    title
+    description
+    category {
+      id
+      name
+    }
+    professor {
+      id
+      fullName
+      email
+    }
+    youtubeVideoId
+    price
+    createdAt
+  }
+}
+
+--------------------------------------------------
+QUERY 3: Get Single Course by ID
+--------------------------------------------------
+{
+  course(id: "YOUR_COURSE_ID_HERE") {
+    id
+    title
+    description
+    price
+    category {
+      id
+      name
+    }
+    professor {
+      id
+      fullName
+    }
+    createdAt
+  }
+}
+
+--------------------------------------------------
+MUTATION: Create Course
+--------------------------------------------------
+mutation {
+  createCourse(input: {
+    title: "Spring Boot Masterclass"
+    description: "Learn Spring Boot framework"
+    categoryId: "1"
+    professorId: "1"
+    youtubeVideoId: "dQw4w9WgXcQ"
+    price: 99.99
+  }) {
+    id
+    title
+    price
+  }
+}
+
+========================================
+HOW TO USE
+========================================
+
+1. Open: graphql-test.html (should be open in browser)
+2. Copy any query above
+3. Paste into the query field
+4. Click "Execute Query"
+5. View results!
+

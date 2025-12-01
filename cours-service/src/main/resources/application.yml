@@ -23,6 +23,12 @@ jwt:
   secret: ${JWT_SECRET:mySecretKeyForJWTTokenGeneration123456789}
   expiration: 86400000
 
+firebase:
+  credentials:
+    path: ${FIREBASE_CREDENTIALS_PATH:firebase-service-account.json}
+  project-id: ${FIREBASE_PROJECT_ID:microservice-e-learning}
+
 graphql:
   servlet:
     mapping: /graphql
+    enabled: true

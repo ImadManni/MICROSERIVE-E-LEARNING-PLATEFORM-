@@ -1,0 +1,86 @@
+graph TB
+    subgraph Actors
+        Student[👤 Student]
+        Admin[👨‍💼 Admin]
+        Professor[👨‍🏫 Professor]
+        Google[🔐 Google OAuth]
+        YouTube[📺 YouTube API]
+    end
+    
+    subgraph "Authentication & Registration"
+        UC1[Register Account]
+        UC2[Login Email/Password]
+        UC3[Login Google OAuth]
+        UC4[Refresh Token]
+    end
+    
+    subgraph "Course Management"
+        UC5[Browse Courses]
+        UC6[Search Courses]
+        UC7[View Course Details]
+        UC8[Create Course]
+        UC9[Update Course]
+        UC10[Delete Course]
+        UC11[Add to Firestore]
+        UC12[Query GraphQL]
+    end
+    
+    subgraph "Enrollment"
+        UC13[Enroll in Course]
+        UC14[View Enrollments]
+        UC15[Update Progress]
+        UC16[Unenroll]
+    end
+    
+    subgraph "Content Management"
+        UC17[Manage Categories]
+        UC18[Manage Professors]
+        UC19[Manage Lessons]
+        UC20[Search YouTube]
+    end
+    
+    subgraph "Analytics"
+        UC21[View Statistics]
+        UC22[Fetch YouTube Stats]
+        UC23[View Dashboard]
+    end
+    
+    Student --> UC1
+    Student --> UC2
+    Student --> UC3
+    Student --> UC5
+    Student --> UC6
+    Student --> UC7
+    Student --> UC13
+    Student --> UC14
+    Student --> UC15
+    Student --> UC16
+    
+    Admin --> UC2
+    Admin --> UC3
+    Admin --> UC5
+    Admin --> UC6
+    Admin --> UC7
+    Admin --> UC8
+    Admin --> UC9
+    Admin --> UC10
+    Admin --> UC11
+    Admin --> UC12
+    Admin --> UC17
+    Admin --> UC18
+    Admin --> UC19
+    Admin --> UC20
+    Admin --> UC21
+    Admin --> UC23
+    
+    Professor --> UC2
+    Professor --> UC3
+    Professor --> UC5
+    Professor --> UC7
+    Professor --> UC8
+    Professor --> UC9
+    
+    Google -.-> UC3
+    YouTube -.-> UC20
+    YouTube -.-> UC22
+

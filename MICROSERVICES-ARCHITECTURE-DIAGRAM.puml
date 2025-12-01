@@ -1,0 +1,106 @@
+@startuml Microservices Architecture Diagram
+!theme plain
+skinparam componentStyle rectangle
+
+package "Client Layer" {
+  [Next.js Frontend] as frontend
+  [Browser] as browser
+}
+
+package "API Gateway Layer" {
+  [Gateway Service\nPort 8080] as gateway
+  [JWT Authentication] as jwt
+}
+
+package "Service Discovery" {
+  [Eureka Server\nPort 8761] as eureka
+  [Config Server\nPort 8888] as config
+}
+
+package "Microservices" {
+  [Cours Service\nPort 8081] as cours
+  [Inscription Service\nPort 8082] as inscription
+  [Statistique Service\nPort 8083] as statistique
+}
+
+package "Data Layer" {
+  database "MySQL\n(cours_db)" as mysql1
+  database "MySQL\n(statistique_db)" as mysql2
+  database "Firebase Firestore\n(students, enrollments, courses)" as firestore
+}
+
+package "External Services" {
+  [Google OAuth] as google
+  [YouTube Data API] as youtube
+  [Firebase Auth] as firebaseAuth
+}
+
+' Client connections
+browser --> frontend
+frontend --> gateway
+frontend --> firebaseAuth
+frontend --> firestore
+
+' Gateway connections
+gateway --> jwt
+gateway --> eureka
+gateway --> cours
+gateway --> inscription
+gateway --> statistique
+
+' Service discovery
+cours --> eureka
+cours --> config
+inscription --> eureka
+inscription --> config
+statistique --> eureka
+statistique --> config
+
+' Service to database
+cours --> mysql1
+cours --> firestore : reads courses
+statistique --> mysql2
+inscription --> firestore
+
+' External integrations
+inscription --> google
+statistique --> youtube
+inscription --> firebaseAuth
+
+' Inter-service communication
+inscription ..> cours : Feign Client\n(course validation)
+
+note right of gateway
+  Routes:
+  - /api/cours/** → Cours Service
+  - /api/inscriptions/** → Inscription Service
+  - /api/stats/** → Statistique Service
+  - /graphql → Cours Service
+  - /auth/** → Inscription Service
+end note
+
+note right of cours
+  Features:
+  - REST API
+  - GraphQL API
+  - Course CRUD
+  - Category/Professor Management
+end note
+
+note right of inscription
+  Features:
+  - Student Registration
+  - Authentication (JWT)
+  - Enrollment Management
+  - Google OAuth
+end note
+
+note right of statistique
+  Features:
+  - YouTube Analytics
+  - Video Statistics
+  - Course Analytics
+end note
+
+@enduml
+

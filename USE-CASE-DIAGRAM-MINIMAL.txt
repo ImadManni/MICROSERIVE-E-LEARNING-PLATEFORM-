@@ -1,0 +1,41 @@
+SIMPLIFIED USE CASE DIAGRAM - E-LEARNING PLATFORM
+==================================================
+
+ACTORS:
+--------
+1. Student - End user who enrolls in courses
+2. Admin - Platform administrator
+3. Google OAuth - External authentication
+
+USE CASES:
+----------
+1. Register/Login
+   - Actors: Student, Admin
+   - Description: User authentication (Email/Password or Google OAuth)
+   
+2. Browse Courses
+   - Actors: Student, Admin
+   - Description: View and search available courses
+   
+3. Enroll in Course
+   - Actor: Student
+   - Description: Student enrolls in a course
+   
+4. View My Courses
+   - Actor: Student
+   - Description: View enrolled courses and progress
+   
+5. Manage Courses
+   - Actor: Admin
+   - Description: Create, update, delete courses
+   
+6. View Statistics
+   - Actor: Admin
+   - Description: View course analytics and statistics
+
+RELATIONSHIPS:
+--------------
+- Student can: Register/Login, Browse Courses, Enroll, View My Courses
+- Admin can: Register/Login, Browse Courses, Manage Courses, View Statistics
+- Google OAuth supports: Register/Login
+

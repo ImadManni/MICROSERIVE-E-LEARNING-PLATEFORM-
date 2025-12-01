@@ -9,12 +9,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@angular/animations": "latest",
-    "@angular/common": "21.0.0",
-    "@angular/core": "21.0.0",
-    "@angular/forms": "21.0.0",
-    "@angular/platform-browser": "latest",
-    "@angular/router": "21.0.0",
     "@apollo/client": "4.0.9",
     "@emotion/is-prop-valid": "latest",
     "@hookform/resolvers": "^3.10.0",
@@ -46,7 +40,6 @@
     "@radix-ui/react-toggle-group": "1.1.1",
     "@radix-ui/react-tooltip": "1.1.6",
     "@vercel/analytics": "latest",
-    "apollo-angular": "12.1.0",
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -69,7 +62,6 @@
     "react-hook-form": "^7.60.0",
     "react-resizable-panels": "^2.1.7",
     "recharts": "latest",
-    "rxjs": "7.8.2",
     "sonner": "^1.7.4",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",

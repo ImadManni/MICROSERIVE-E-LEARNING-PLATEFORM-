@@ -1,0 +1,104 @@
+@startuml Use Case Diagram - E-Learning Platform
+!theme plain
+skinparam actorStyle awesome
+
+left to right direction
+
+actor Student as student
+actor Admin as admin
+actor Professor as professor
+actor "Google OAuth" as google
+actor "YouTube API" as youtube
+
+rectangle "E-Learning Platform" {
+  
+  package "Authentication & Registration" {
+    usecase "Register Account" as UC1
+    usecase "Login with Email/Password" as UC2
+    usecase "Login with Google OAuth" as UC3
+    usecase "Refresh JWT Token" as UC4
+  }
+  
+  package "Course Management" {
+    usecase "Browse Courses" as UC5
+    usecase "Search Courses" as UC6
+    usecase "View Course Details" as UC7
+    usecase "Create Course" as UC8
+    usecase "Update Course" as UC9
+    usecase "Delete Course" as UC10
+    usecase "Add Course to Firestore" as UC11
+    usecase "Query Courses via GraphQL" as UC12
+  }
+  
+  package "Enrollment Management" {
+    usecase "Enroll in Course" as UC13
+    usecase "View My Enrollments" as UC14
+    usecase "Update Progress" as UC15
+    usecase "Unenroll from Course" as UC16
+  }
+  
+  package "Content Management" {
+    usecase "Manage Categories" as UC17
+    usecase "Manage Professors" as UC18
+    usecase "Manage Lessons" as UC19
+    usecase "Search YouTube Videos" as UC20
+  }
+  
+  package "Analytics & Statistics" {
+    usecase "View Course Statistics" as UC21
+    usecase "Fetch YouTube Video Stats" as UC22
+    usecase "View Analytics Dashboard" as UC23
+  }
+}
+
+' Student use cases
+student --> UC1
+student --> UC2
+student --> UC3
+student --> UC5
+student --> UC6
+student --> UC7
+student --> UC13
+student --> UC14
+student --> UC15
+student --> UC16
+
+' Admin use cases
+admin --> UC2
+admin --> UC3
+admin --> UC5
+admin --> UC6
+admin --> UC7
+admin --> UC8
+admin --> UC9
+admin --> UC10
+admin --> UC11
+admin --> UC12
+admin --> UC17
+admin --> UC18
+admin --> UC19
+admin --> UC20
+admin --> UC21
+admin --> UC23
+
+' Professor use cases
+professor --> UC2
+professor --> UC3
+professor --> UC5
+professor --> UC7
+professor --> UC8
+professor --> UC9
+
+' External systems
+google --> UC3
+youtube --> UC22
+
+' Relationships
+UC3 ..> google : <<uses>>
+UC20 ..> youtube : <<uses>>
+UC22 ..> youtube : <<uses>>
+UC11 ..> UC12 : <<extends>>
+UC8 ..> UC11 : <<includes>>
+
+@enduml
+

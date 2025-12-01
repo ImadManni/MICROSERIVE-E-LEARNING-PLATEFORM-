@@ -1,0 +1,33 @@
+@startuml Simplified Use Case Diagram
+!theme plain
+skinparam actorStyle awesome
+
+left to right direction
+
+actor Student as student
+actor Admin as admin
+actor "Google OAuth" as google
+
+rectangle "E-Learning Platform" {
+  usecase "Register/Login" as UC1
+  usecase "Browse Courses" as UC2
+  usecase "Enroll in Course" as UC3
+  usecase "View My Courses" as UC4
+  usecase "Manage Courses" as UC5
+  usecase "View Statistics" as UC6
+}
+
+student --> UC1
+student --> UC2
+student --> UC3
+student --> UC4
+
+admin --> UC1
+admin --> UC2
+admin --> UC5
+admin --> UC6
+
+google --> UC1 : OAuth Login
+
+@enduml
+

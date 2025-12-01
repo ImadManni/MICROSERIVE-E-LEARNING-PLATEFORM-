@@ -155,13 +155,25 @@ export default function AdminCoursesPage() {
         professor: professors.find((p) => p.id === formData.professorId),
       }
 
-      // Save to Firestore
+      // Save to Firestore (GraphQL will read from here)
       const savedCourse = await saveCourseToFirestore(
         courseData,
         editingCourse ? String(editingCourse.id) : undefined
       )
 
       console.log("✅ Course saved to Firestore:", savedCourse)
+
+      if (firestoreCourse.status === 'fulfilled') {
+        console.log("✅ Course saved to Firestore:", firestoreCourse.value)
+      } else {
+        console.error("❌ Failed to save to Firestore:", firestoreCourse.reason)
+      }
+
+      if (mongoCourse.status === 'fulfilled' && mongoCourse.value) {
+        console.log("✅ Course saved to MongoDB:", mongoCourse.value)
+      } else {
+        console.warn("⚠️ Course not saved to MongoDB (GraphQL may not show it)")
+      }
 
       setDialogOpen(false)
       loadData() // Reload courses from Firestore

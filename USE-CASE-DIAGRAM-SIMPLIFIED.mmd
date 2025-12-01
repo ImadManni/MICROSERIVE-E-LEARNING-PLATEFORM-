@@ -1,0 +1,24 @@
+graph TB
+    Student[👤 Student]
+    Admin[👨‍💼 Admin]
+    Google[🔐 Google OAuth]
+    
+    UC1[Register/Login]
+    UC2[Browse Courses]
+    UC3[Enroll in Course]
+    UC4[View My Courses]
+    UC5[Manage Courses]
+    UC6[View Statistics]
+    
+    Student --> UC1
+    Student --> UC2
+    Student --> UC3
+    Student --> UC4
+    
+    Admin --> UC1
+    Admin --> UC2
+    Admin --> UC5
+    Admin --> UC6
+    
+    Google -.-> UC1
+

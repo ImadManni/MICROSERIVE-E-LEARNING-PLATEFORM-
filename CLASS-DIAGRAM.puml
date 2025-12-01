@@ -1,0 +1,251 @@
+@startuml Class Diagram - E-Learning Platform
+!theme plain
+skinparam classAttributeIconSize 0
+
+package "Cours Service" {
+  class Course {
+    -String id
+    -String title
+    -String description
+    -String youtubeVideoId
+    -BigDecimal price
+    -LocalDateTime createdAt
+    -List<Lesson> lessons
+    +getId()
+    +getTitle()
+    +getDescription()
+    +getPrice()
+  }
+  
+  class Category {
+    -String id
+    -String name
+    -String description
+    +getId()
+    +getName()
+  }
+  
+  class Professor {
+    -String id
+    -String fullName
+    -String email
+    -String bio
+    -String avatarUrl
+    +getId()
+    +getFullName()
+    +getEmail()
+  }
+  
+  class Lesson {
+    -String id
+    -String title
+    -String content
+    -Integer duration
+    -String courseId
+    +getId()
+    +getTitle()
+    +getDuration()
+  }
+  
+  class CourseDTO {
+    -String id
+    -String title
+    -String description
+    -String categoryId
+    -String professorId
+    -BigDecimal price
+    -Integer lessonsCount
+  }
+  
+  Course "1" *-- "1" Category : belongs to
+  Course "1" *-- "1" Professor : taught by
+  Course "1" *-- "*" Lesson : contains
+  Course ..> CourseDTO : maps to
+}
+
+package "Inscription Service" {
+  class Student {
+    -String id
+    -String fullName
+    -String email
+    -String passwordHash
+    -LocalDateTime createdAt
+    -Set<String> roles
+    +getId()
+    +getEmail()
+    +getRoles()
+  }
+  
+  class Enrollment {
+    -String id
+    -String studentId
+    -String courseId
+    -LocalDateTime enrollmentDate
+    -Integer progress
+    +getId()
+    +getStudentId()
+    +getCourseId()
+    +getProgress()
+  }
+  
+  class AuthResponse {
+    -String token
+    -String tokenType
+    -String userId
+    -String email
+    -String fullName
+    -Set<String> roles
+  }
+  
+  Student "1" *-- "*" Enrollment : has
+  Enrollment "1" --> "1" Student : references
+}
+
+package "Statistique Service" {
+  class VideoStatistic {
+    -String id
+    -String courseId
+    -String youtubeVideoId
+    -Long views
+    -Long likes
+    -Long comments
+    -String title
+    -String description
+    -String thumbnailUrl
+    -LocalDateTime fetchedAt
+    +getId()
+    +getViews()
+    +getLikes()
+  }
+  
+  VideoStatistic "1" --> "1" Course : references
+}
+
+package "Services" {
+  class CourseService {
+    +getAllCourses(Pageable)
+    +getCourseById(String)
+    +createCourse(CourseDTO)
+    +updateCourse(String, CourseDTO)
+    +deleteCourse(String)
+    +searchCourses(String, Pageable)
+  }
+  
+  class AuthService {
+    +register(RegisterRequest)
+    +login(AuthRequest)
+    +loginWithGoogle(String)
+    +refreshToken(String)
+  }
+  
+  class EnrollmentService {
+    +enrollStudent(String, String)
+    +getStudentEnrollments(String)
+    +updateProgress(String, Integer)
+    +unenroll(String)
+  }
+  
+  class StatistiqueService {
+    +fetchVideoStatistics(String, String)
+    +getCourseStatistics(String)
+    +getVideoStatistics(String)
+  }
+  
+  CourseService ..> Course : manages
+  AuthService ..> Student : manages
+  EnrollmentService ..> Enrollment : manages
+  EnrollmentService ..> Student : uses
+  StatistiqueService ..> VideoStatistic : manages
+}
+
+package "Repositories" {
+  interface CourseRepository {
+    +findAll()
+    +findById(String)
+    +save(Course)
+    +deleteById(String)
+    +searchCourses(String, Pageable)
+  }
+  
+  interface FirestoreCourseRepository {
+    +findAll()
+    +findById(String)
+  }
+  
+  interface FirebaseStudentRepository {
+    +save(Student)
+    +findById(String)
+    +findByEmail(String)
+    +existsByEmail(String)
+  }
+  
+  interface FirebaseEnrollmentRepository {
+    +save(Enrollment)
+    +findByStudentId(String)
+    +findByCourseId(String)
+  }
+  
+  CourseRepository ..> Course : queries
+  FirestoreCourseRepository ..> Course : queries
+  FirebaseStudentRepository ..> Student : queries
+  FirebaseEnrollmentRepository ..> Enrollment : queries
+}
+
+package "Controllers" {
+  class CourseController {
+    +getAllCourses()
+    +getCourseById(String)
+    +createCourse(CourseDTO)
+    +updateCourse(String, CourseDTO)
+    +deleteCourse(String)
+    +searchCourses(String)
+  }
+  
+  class CourseGraphQLController {
+    +course(String)
+    +courses()
+    +createCourse(CourseInput)
+  }
+  
+  class AuthController {
+    +register(RegisterRequest)
+    +login(AuthRequest)
+    +loginWithGoogle(String)
+    +refreshToken(String)
+  }
+  
+  class EnrollmentController {
+    +enroll(String, String)
+    +getStudentEnrollments(String)
+    +updateProgress(String, Integer)
+    +unenroll(String)
+  }
+  
+  CourseController ..> CourseService : uses
+  CourseGraphQLController ..> CourseService : uses
+  AuthController ..> AuthService : uses
+  EnrollmentController ..> EnrollmentService : uses
+}
+
+' Cross-service relationships
+Enrollment "1" --> "1" Course : references
+VideoStatistic "1" --> "1" Course : references
+
+note right of Course
+  Stored in:
+  - MongoDB (cours-service)
+  - Firestore (frontend/admin)
+end note
+
+note right of Student
+  Stored in:
+  - Firebase Firestore
+end note
+
+note right of Enrollment
+  Stored in:
+  - Firebase Firestore
+end note
+
+@enduml
+

@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+// @Transactional not needed for Firestore (no transactions)
 
 import java.util.Map;
 import java.util.Set;
@@ -26,7 +26,6 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final com.learning.inscription.security.GoogleTokenVerifier googleTokenVerifier;
 
-    @Transactional
     public AuthResponse register(RegisterRequest request) {
         log.info("Registering new student with email: {}", request.getEmail());
 
@@ -54,7 +53,6 @@ public class AuthService {
                 savedStudent.getRoles());
     }
 
-    @Transactional(readOnly = true)
     public AuthResponse login(AuthRequest request) {
         log.info("Login attempt for email: {}", request.getEmail());
 
@@ -99,7 +97,6 @@ public class AuthService {
                 student.getRoles());
     }
 
-    @Transactional
     public AuthResponse loginWithGoogle(String googleToken) {
         log.info("Login with Google token");
 
